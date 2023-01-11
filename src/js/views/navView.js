@@ -6,7 +6,6 @@ class NavView extends View {
   _currentCategory = document.querySelector('.current-category');
 
   setCurrentCategory(data) {
-    console.log(data);
     if (!data) {
       this._currentCategory.textContent = 'all';
       this._currentCategory.style.background = '#fff';

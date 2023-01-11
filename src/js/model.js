@@ -5,19 +5,6 @@ export const state = {
   categories: [],
 };
 
-// const testNote = {
-//   title: 'It note',
-//   text: `IT NOTEs is the main Lorem ipsum dolor sit amet consectetur
-//   adipisicing elit. Dolorum, quisquam odio! Ea quod animi consequuntur
-//   Wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww necessitatibus, impedit Lorem
-//   ipsum dolor sit amet consectetur adipisicing elit. Impedit, mollitia
-//   sunt placeat ea reiciendis non beatae harum at officia, nesciunt,`,
-//   id: newId(),
-//   category: 'IT notes',
-//   date: new Date(),
-// };
-
-// state.notes.push(testNote);
 export const addNote = function (note) {
   note.id = newId();
   note.date = new Date();
@@ -51,10 +38,10 @@ export const deleteCategory = function (id) {
   persistCategories();
 
   // clear categories from notes
-  console.log(state.notes);
   state.notes.forEach(note => {
     if (note.category[0] === id) {
       note.category[2] = `No category`;
+      note.category[1] = '#7048e8';
     }
   });
   persistNote();

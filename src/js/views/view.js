@@ -1,7 +1,6 @@
 export default class View {
-  render(data) {
+  render(data, animate = false) {
     const hash = document.URL.split('#')[1];
-    console.log(hash);
     if (
       this._parentElement === document.querySelector('.notes') &&
       hash?.startsWith('cat')
@@ -20,7 +19,6 @@ export default class View {
         el.style.opacity = '1';
       });
     }, 50);
-    console.log('anim');
   }
 
   renderURL(data) {

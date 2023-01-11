@@ -88,13 +88,17 @@ class CategoriesView extends View {
   _createMarkup(category) {
     return `
     <a href="#${category.id}" data-catid="${category.id}" class="category" style="background: ${category.color}">${category.title}</>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="delete-category">
+    <div class="delete-category-container">
+    <div class="delete-category"></div>
+    </div>
   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
 </svg>
 
     </a>
     `;
   }
+
+  // <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="delete-category">
 
   showMessage() {
     this._message.style.opacity = 1;

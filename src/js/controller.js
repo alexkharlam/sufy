@@ -53,6 +53,14 @@ const controlSaveNote = function (note) {
 };
 
 const controlDeleteCategory = function (id) {
+  const urlId = document.URL;
+  console.log(window.location.hash);
+
+  if (urlId.split('#')[1] === id) {
+    console.log('url');
+    window.location.hash = '';
+  }
+
   console.log(id);
   // delete from state
   model.deleteCategory(id);
@@ -66,19 +74,26 @@ const controlDeleteCategory = function (id) {
   controlNotes();
 };
 
-const controlHashChange = function (id) {
-  // console.log(id);
+const controlHashChange = function (id, type = 'openCategory') {
+  if (type === 'openNote') {
+    const note = model.state.notes.find(note => note.id === id);
+    return;
+  }
 
-  // if (!model.state.notes) return;
-  // notesView.clearNotesView();
-  // // render notes
-  // model.state.notes.forEach(note => {
-  //   if (note.category[0] === id) notesView.render(note);
-  // });
   controlNotes();
   navView.setCurrentCategory(
     model.state.categories.find(category => category.id === id)
   );
+};
+
+const controlHash = function () {
+  const urlId = document.URL.split('#')[1];
+  const cat = model.state.categories.find(cat => cat.id === urlId);
+  if (!cat) return;
+  console.log(cat);
+  if (urlId.startsWith('cat')) {
+    navView.setCurrentCategory(cat);
+  }
 };
 
 const init = function () {
@@ -86,6 +101,7 @@ const init = function () {
   controlCategories();
   controlNotes();
   controlCategoriesList();
+  controlHash();
   // handlers
   categoriesView.saveCategoryHandler(controlSaveCategory);
   createNoteView.createNoteHandler(controlSaveNote);

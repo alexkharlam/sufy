@@ -7,6 +7,7 @@ class NotesView extends View {
   hashChangeHandler(handler) {
     window.addEventListener('hashchange', function (e) {
       const id = e.newURL.split('#')[1];
+      if (id.startsWith('0')) return handler(id, 'openNote');
       // if (id.startsWith('cat')) return handler();
       return handler(id);
     });

@@ -195,17 +195,41 @@ main {
   position: absolute;
   width: 24px;
   height: 24px;
-  /* background-color: #fff; */
+  background-color: #fff;
   top: 2px;
   right: 2px;
-  stroke: #f8f9fa;
   display: none;
   transition: all 0.2s;
   border-radius: 1000px;
 }
 
+.delete-category::after,
+.delete-category::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  content: '';
+  background-color: #000;
+  width: 80%;
+  height: 2px;
+  display: block;
+}
+
+.delete-category::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.delete-category::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
 .category:hover .delete-category {
   display: block;
+}
+
+.delete-category:hover::after,
+.delete-category:hover::before {
+  background-color: #f03e3e;
 }
 
 .delete-category:hover {
