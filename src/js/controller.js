@@ -45,23 +45,27 @@ const controlSaveCategory = function (category) {
 };
 
 const controlSaveNote = function (note) {
-  console.log(note);
   // adding note to the state
   const newNoteData = model.addNote(note);
   // render note
   notesView.render(newNoteData);
 };
 
-const controlDeleteCategory = function (id) {
-  const urlId = document.URL;
-  console.log(window.location.hash);
+const controlDeleteNote = function (id) {
+  // deleting from state
+  model.deleteNote(id);
+  // rendering
+  controlNotes();
+};
 
+const controlDeleteCategory = function (id) {
+  // hecking if need to go to main page
+  const urlId = document.URL;
   if (urlId.split('#')[1] === id) {
     console.log('url');
     window.location.hash = '';
   }
 
-  console.log(id);
   // delete from state
   model.deleteCategory(id);
   // clear existing categories
@@ -106,6 +110,7 @@ const init = function () {
   categoriesView.saveCategoryHandler(controlSaveCategory);
   createNoteView.createNoteHandler(controlSaveNote);
   categoriesView.deleteCategoryHandler(controlDeleteCategory);
+  notesView.deleteNoteHandler(controlDeleteNote);
   // hashcnage
   notesView.hashChangeHandler(controlHashChange);
 };

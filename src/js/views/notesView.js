@@ -17,7 +17,9 @@ class NotesView extends View {
     data.text = `${data.text}`.replaceAll(' ', '&nbsp');
     data.text = `${data.text}`.replaceAll('\n', '<br>');
     return `   
-      <a href="#${data.id}" class="note-preview" style="background: ${
+      <a href="#${data.id}" data-id="${
+      data.id
+    }" class="note-preview" style="background: ${
       data.category[1] ? data.category[1] : '#7048e8'
     }">
         <div class="preview-text-block">
@@ -25,6 +27,7 @@ class NotesView extends View {
           <p class="preview-text">${data.text}</p>
         </div>
         <div class="preview-info">
+         <div class="delete-note-btn">remove</div>
           <div class="preview-category">${
             data.category[2] ? data.category[2] : 'No category'
           }</div>
@@ -38,6 +41,15 @@ class NotesView extends View {
     document
       .querySelectorAll('.note-preview')
       .forEach(note => note.parentNode.removeChild(note));
+  }
+
+  deleteNoteHandler(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      if (!e.target.classList.contains('delete-note-btn')) return;
+
+      const id = e.target.closest('.note-preview').dataset.id;
+      handler(id);
+    });
   }
 }
 

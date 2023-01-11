@@ -15,6 +15,12 @@ export const addNote = function (note) {
   return note;
 };
 
+export const deleteNote = function (id) {
+  const idx = state.notes.findIndex(note => note.id === id);
+  state.notes.splice(idx, 1);
+  persistNote();
+};
+
 export const addCategory = function (category) {
   try {
     // error handling (same name)
