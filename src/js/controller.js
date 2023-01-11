@@ -6,6 +6,7 @@ import navView from './views/navView';
 
 const controlNotes = function () {
   if (!model.state.notes) return;
+  //  clear view
   notesView.clearNotesView();
   // render notes
   model.state.notes.forEach(note => notesView.render(note));
@@ -21,8 +22,9 @@ const controlCategories = function () {
 
 // controlling categories list inside of create note window
 const controlCategoriesList = function () {
+  // clear list
   createNoteView.clearCategoriesList();
-
+  // render list
   model.state.categories.forEach(category =>
     createNoteView.renderCategoryList(category)
   );
@@ -36,7 +38,7 @@ const controlSaveCategory = function (category) {
     categoriesView.render(newCategoryData);
     // close window
     categoriesView.toggleWindow('close');
-    // add category to list inside of create note window
+    // add category to the categories list inside of create note window
     controlCategoriesList();
   } catch (err) {
     console.error(err);
@@ -45,7 +47,7 @@ const controlSaveCategory = function (category) {
 };
 
 const controlSaveNote = function (note) {
-  // adding note to the state
+  // add note to the state
   const newNoteData = model.addNote(note);
   // render note
   notesView.render(newNoteData);
@@ -54,52 +56,54 @@ const controlSaveNote = function (note) {
 const controlDeleteNote = function (id) {
   // deleting from state
   model.deleteNote(id);
-  // rendering
+  // render notes
   controlNotes();
 };
 
 const controlDeleteCategory = function (id) {
-  // hecking if need to go to main page
+  // checking if we are currently on this category page and need to go to the homepage
   const urlId = document.URL;
   if (urlId.split('#')[1] === id) {
-    console.log('url');
     window.location.hash = '';
   }
 
   // delete from state
   model.deleteCategory(id);
-  // clear existing categories
-
   // render categories
   controlCategories();
-  // delete from list in notesview
+  // delete from categories list in notesview
   controlCategoriesList();
-  // render notes
+  // re-render notes (if note had this category, it's sets to 'No category')
   controlNotes();
 };
 
 const controlHashChange = function (id, type = 'openCategory') {
+  // checking for type of hash, default - openCategory
+  // TODO: Not done yet - opening full size note functionality when clicking on the note
   if (type === 'openNote') {
-    const note = model.state.notes.find(note => note.id === id);
+    // const note = model.state.notes.find(note => note.id === id);
     return;
   }
-
+  // render notes
   controlNotes();
+  // set current category
   navView.setCurrentCategory(
     model.state.categories.find(category => category.id === id)
   );
 };
 
+// control hash and current category window while page first loads
 const controlHash = function () {
+  // get urlID TODO: use not document.url, but window.location(replace anywhere)
   const urlId = document.URL.split('#')[1];
   const cat = model.state.categories.find(cat => cat.id === urlId);
   if (!cat) return;
-  console.log(cat);
   if (urlId.startsWith('cat')) {
     navView.setCurrentCategory(cat);
   }
 };
 
+// init function, calls other functions
 const init = function () {
   // control Renders
   controlCategories();
@@ -111,7 +115,6 @@ const init = function () {
   createNoteView.createNoteHandler(controlSaveNote);
   categoriesView.deleteCategoryHandler(controlDeleteCategory);
   notesView.deleteNoteHandler(controlDeleteNote);
-  // hashcnage
   notesView.hashChangeHandler(controlHashChange);
 };
 init();

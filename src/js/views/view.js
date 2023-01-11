@@ -20,7 +20,7 @@ export default class View {
       });
     }, 50);
   }
-
+  // render if url has hash with category id
   renderURL(data) {
     const id = document.URL.split('#')[1];
     if (id !== data.category[0]) return;

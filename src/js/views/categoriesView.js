@@ -27,6 +27,7 @@ class CategoriesView extends View {
   }
 
   clearElements() {
+    // clear all elements from categories list (except from create category)
     document
       .querySelectorAll('.category')
       .forEach(cat => cat.parentNode.removeChild(cat));
@@ -39,8 +40,6 @@ class CategoriesView extends View {
     e.target.classList.add('color-active');
     // set currentColor
     this._currentColor = e.target.style.background;
-
-    console.log(this._currentColor);
   }
 
   saveCategoryHandler(handler) {
@@ -57,12 +56,12 @@ class CategoriesView extends View {
       color: this._currentColor,
     };
     if (!data.title) return;
-    // adding id to the category
-    // calling controller handler
+    // calling handler in the controller
     handler(data);
   }
 
   toggleWindow(toggleType = 'open') {
+    // TODO: REFACTORING
     if (toggleType === 'close') this._categoryInputBlock.style.display = 'none';
     if (toggleType === 'open') this._categoryInputBlock.style.display = 'block';
     setTimeout(() => {
@@ -78,27 +77,15 @@ class CategoriesView extends View {
     if (toggleType === 'close') this._title.value = '';
   }
 
-  // _createMarkup(category) {
-  //   return `<a href="#${category.id}">
-  //   <div data-catId="${category.id}" class="category" style="background: ${category.color}">${category.title}</div>
-  //   </a>
-  //   `;
-  // }
-
   _createMarkup(category) {
+    // creating markup for the render function in VIEW
     return `
     <a href="#${category.id}" data-catid="${category.id}" class="category" style="background: ${category.color}">${category.title}</>
-    <div class="delete-category-container">
-    <div class="delete-category"></div>
-    </div>
-  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-</svg>
-
-    </a>
-    `;
+      <div class="delete-category-container">
+        <div class="delete-category"></div>
+      </div>
+    </a>`;
   }
-
-  // <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="delete-category">
 
   showMessage() {
     this._message.style.opacity = 1;
@@ -111,7 +98,9 @@ class CategoriesView extends View {
     this._parentElement.addEventListener('click', function (e) {
       if (!e.target.classList.contains('delete-category')) return;
       e.preventDefault();
+      // getting id from the element
       const id = e.target.closest('.category').dataset.catid;
+      // calling controller function
       handler(id);
     });
   }

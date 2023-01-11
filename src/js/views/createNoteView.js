@@ -32,21 +32,19 @@ class CreateNoteView extends View {
       title: this._title.value,
       text: this._text.value,
     };
+    // adding the array of category data
     data.category = `${this._category.value}`.split('/');
-    console.log(data);
-
-    // check if they are not empty (if they are, show message)
+    // check if they are not empty (if they are, show message and return function)
     if (!data.title || !data.text) {
       this._showMessage();
+      return;
     }
-
-    // call handler function and clearing fields
-    if (data.title && data.text) {
-      // close window
-      this._closeModal();
-      handler(data);
-      this._title.value = this._text.value = '';
-    }
+    // close window
+    this._closeModal();
+    // call controller function
+    handler(data);
+    // clear fields
+    this._title.value = this._text.value = '';
   }
 
   _showMessage() {
@@ -66,13 +64,11 @@ class CreateNoteView extends View {
     }, 10);
     // focus on field
     this._title.focus();
-
     this._outline.addEventListener('click', this._closeModal.bind(this));
   }
 
   _closeModalEsc(e) {
     if (e.key !== 'Escape') return;
-    console.log('esc');
     this._closeModal();
   }
 
@@ -87,12 +83,14 @@ class CreateNoteView extends View {
   }
 
   renderCategoryList(category) {
+    // adding category to the list (value is a string of data divided by /)
     const markup = `<option class="select-category" value="${category.id}/${category.color}/${category.title}">${category.title}</option>`;
-
+    // render
     this._categoriesList.insertAdjacentHTML('beforeend', markup);
   }
 
   clearCategoriesList() {
+    // clear options list
     document
       .querySelectorAll('.select-category')
       .forEach(cat => cat.parentNode.removeChild(cat));

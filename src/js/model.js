@@ -1,36 +1,42 @@
 import { newId } from './helper';
 
+// state - holder for notes and categories
 export const state = {
   notes: [],
   categories: [],
 };
 
 export const addNote = function (note) {
+  // adding id and date data
   note.id = newId();
   note.date = new Date();
-
+  // adding to the state
   state.notes.push(note);
-
+  // sync with local storage
   persistNote();
+  // returning, so the controller can use id and date
   return note;
 };
 
 export const deleteNote = function (id) {
+  // finding index using id TODO: optmization
   const idx = state.notes.findIndex(note => note.id === id);
+  // deleting
   state.notes.splice(idx, 1);
+  // sync with local storage
   persistNote();
 };
 
 export const addCategory = function (category) {
   try {
-    // error handling (same name)
+    // error handling (NOT allowed to have the same category title)
     if (state.categories.some(cat => cat.title === category.title))
       throw new Error('Category with this title already exists');
     // creating id
     category.id = `cat${newId('category')}`;
     // adding to state
     state.categories.push(category);
-    // adding to local storage
+    // sync with local storage
     persistCategories();
     return category;
   } catch (err) {
@@ -39,10 +45,12 @@ export const addCategory = function (category) {
 };
 
 export const deleteCategory = function (id) {
+  // getting idx of the category
   const idx = state.categories.findIndex(cat => cat.id === id);
+  // deleting
   state.categories.splice(idx, 1);
+  // sync with local storage
   persistCategories();
-
   // clear categories from notes
   state.notes.forEach(note => {
     if (note.category[0] === id) {
@@ -50,10 +58,12 @@ export const deleteCategory = function (id) {
       note.category[1] = '#7048e8';
     }
   });
+  // sync with local storage
   persistNote();
-  console.log(state.notes);
 };
 
+// *******************************************************
+// LOCAL STORAGE FUNCTIONS
 const persistNote = function () {
   localStorage.setItem('notes', JSON.stringify(state.notes));
 };
@@ -71,6 +81,5 @@ initStorageNotes();
 const initStorageCategories = function () {
   if (!localStorage.getItem('categories')) return;
   state.categories = JSON.parse(localStorage.getItem('categories'));
-  // localStorage.clear('categories');
 };
 initStorageCategories();
