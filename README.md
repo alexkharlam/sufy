@@ -1,6 +1,7 @@
 #Sufy project
 
 ## About
+[You can try it out (go to website)](https://sufy.netlify.app/)                                         
 Notes app, created only with Javascript, Html and CSS.                                  
 Parcel for bundling (source file - index.html)
 
